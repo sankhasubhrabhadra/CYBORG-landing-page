@@ -1,27 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, Gauge, Terminal, RefreshCw, Zap, Shield, Cpu, Clock } from 'lucide-react';
+import { Activity, Gauge, Terminal, RefreshCw, Zap, Shield, Cpu } from 'lucide-react';
 import { soundFx } from '../utils/SoundManager';
 
 export const SystemTelemetry = () => {
   const [metrics, setMetrics] = useState({
-    neuralSync: 98.7,
-    processingLoad: 67.4,
-    reactionTime: 12,
-    adaptation: 91.8,
-    cognitiveBandwidth: 84.2,
+    systemStability: 99.98,
+    neuralSync: 98.72,
+    processing: 67.41,
+    reaction: 12,
+    cognitiveBandwidth: 84.20,
   });
 
   const [logs, setLogs] = useState([
-    { time: '19:14:02', msg: 'TELEMETRY_BUS: Synaptic coherence verified across Layer-4' },
-    { time: '19:14:05', msg: 'HEURISTIC_AI: Dynamic cognitive adaptation weight: 0.918' },
-    { time: '19:14:08', msg: 'OPTIC_FEED: Micro-expression tracking active [120 FPS]' },
-    { time: '19:14:11', msg: 'CRYSTAL_INDEX: Holographic memory checksum: 0x8F9A22 [Valid]' },
+    { time: '19:26:01', msg: 'TELEMETRY_BUS: Synaptic coherence verified across Layer-4' },
+    { time: '19:26:04', msg: 'HEURISTIC_AI: Dynamic cognitive adaptation weight: 0.918' },
+    { time: '19:26:07', msg: 'OPTIC_FEED: Micro-expression tracking active [120 FPS]' },
+    { time: '19:26:10', msg: 'CRYSTAL_INDEX: Holographic memory checksum: 0x8F9A22 [Valid]' },
   ]);
 
   const [wavePoints, setWavePoints] = useState([]);
   const [isOverclocked, setIsOverclocked] = useState(false);
 
+  // Micro-fluctuations for realistic live telemetry feel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMetrics((prev) => ({
+        systemStability: +(99.95 + Math.random() * 0.04).toFixed(2),
+        neuralSync: +(isOverclocked ? 99.85 + Math.random() * 0.1 : 98.65 + Math.random() * 0.15).toFixed(2),
+        processing: +(isOverclocked ? 91.2 + Math.random() * 2.5 : 66.8 + Math.random() * 1.5).toFixed(2),
+        reaction: isOverclocked ? 6 : Math.round(11 + Math.random() * 2),
+        cognitiveBandwidth: +(isOverclocked ? 98.4 + Math.random() * 1.2 : 83.8 + Math.random() * 0.8).toFixed(2),
+      }));
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [isOverclocked]);
+
+  // Real-time Oscilloscope Wave
   useEffect(() => {
     let t = 0;
     const interval = setInterval(() => {
@@ -44,25 +60,11 @@ export const SystemTelemetry = () => {
     soundFx.playClick();
     setIsOverclocked(!isOverclocked);
     if (!isOverclocked) {
-      setMetrics({
-        neuralSync: 99.8,
-        processingLoad: 92.6,
-        reactionTime: 6,
-        adaptation: 97.4,
-        cognitiveBandwidth: 98.9,
-      });
       setLogs((prev) => [
-        { time: new Date().toLocaleTimeString(), msg: 'OVERCLOCK ENGAGED: Neural frequency scaled to 142.8 GHz (+18% Power)' },
+        { time: new Date().toLocaleTimeString(), msg: 'OVERCLOCK ENGAGED: Neural bus boosted to 142.8 GHz (+18% Power)' },
         ...prev.slice(0, 4)
       ]);
     } else {
-      setMetrics({
-        neuralSync: 98.7,
-        processingLoad: 67.4,
-        reactionTime: 12,
-        adaptation: 91.8,
-        cognitiveBandwidth: 84.2,
-      });
       setLogs((prev) => [
         { time: new Date().toLocaleTimeString(), msg: 'STANDBY RESTORED: Thermal equilibrium back to 36.8°C.' },
         ...prev.slice(0, 4)
@@ -74,43 +76,43 @@ export const SystemTelemetry = () => {
     soundFx.playClick();
     soundFx.playInitialize();
     setLogs((prev) => [
-      { time: new Date().toLocaleTimeString(), msg: 'RECALIBRATION: Neural sync and optical timing aligned to reference clock.' },
+      { time: new Date().toLocaleTimeString(), msg: 'RECALIBRATION: Real-time neural sync and optical timing aligned to reference clock.' },
       ...prev.slice(0, 4)
     ]);
   };
 
   const metricList = [
     {
-      label: 'NEURAL SYNC',
-      value: metrics.neuralSync,
+      label: 'SYSTEM STABILITY',
+      value: metrics.systemStability,
       unit: '%',
       color: 'text-cyan-400',
       gradient: 'from-cyan-500 to-blue-500',
-      desc: 'Synaptic alignment coefficient'
+      desc: 'Quantum lattice equilibrium'
     },
     {
-      label: 'PROCESSING LOAD',
-      value: metrics.processingLoad,
+      label: 'NEURAL SYNC',
+      value: metrics.neuralSync,
       unit: '%',
       color: 'text-violet-400',
       gradient: 'from-violet-500 to-purple-500',
-      desc: 'Quantum substrate utilization'
+      desc: 'Synaptic alignment index'
     },
     {
-      label: 'REACTION TIME',
-      value: metrics.reactionTime,
-      unit: 'ms',
+      label: 'PROCESSING',
+      value: metrics.processing,
+      unit: '%',
       color: 'text-emerald-400',
       gradient: 'from-emerald-500 to-teal-400',
-      desc: 'Bio-motor reflex acceleration'
+      desc: 'Quantum substrate load'
     },
     {
-      label: 'ADAPTATION',
-      value: metrics.adaptation,
-      unit: '%',
+      label: 'REACTION',
+      value: metrics.reaction,
+      unit: 'ms',
       color: 'text-amber-400',
       gradient: 'from-amber-500 to-orange-400',
-      desc: 'Synaptic plasticity index'
+      desc: 'Bio-motor reflex acceleration'
     },
     {
       label: 'COGNITIVE BANDWIDTH',
@@ -130,13 +132,13 @@ export const SystemTelemetry = () => {
         <div className="text-center space-y-3 mb-16">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-cyan-950/60 border border-cyan-400/20 font-mono text-xs text-cyan-300">
             <Gauge className="w-3.5 h-3.5 text-cyan-400" />
-            <span>LIVE MONITORING // TELEMETRY HUB</span>
+            <span>LIVE MONITORING // TELEMETRY SIMULATION</span>
           </div>
           <h2 className="font-orbitron font-black text-3xl sm:text-5xl text-white tracking-wider uppercase">
             SYSTEM TELEMETRY
           </h2>
           <p className="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
-            Continuous quantum telemetry and biocircuit monitoring across active cybernetic host units.
+            Real-time simulated telemetry telemetry stream from active cybernetic host units.
           </p>
         </div>
 
@@ -152,7 +154,7 @@ export const SystemTelemetry = () => {
                   CYBERNETIC TELEMETRY MATRIX
                 </span>
                 <span className="font-mono text-[11px] text-slate-400">
-                  MONITOR ID::TEL-707 // FREQUENCY: 128.4 GHz
+                  SIMULATED HOST::ALPHA-707 // FREQUENCY: 128.4 GHz
                 </span>
               </div>
             </div>
@@ -182,7 +184,7 @@ export const SystemTelemetry = () => {
             </div>
           </div>
 
-          {/* 5 Exact Required Metrics Cards */}
+          {/* 5 Required Metrics Cards with Live Micro-Interpolation */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
             {metricList.map((m, idx) => (
               <motion.div

@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Eye, Database, Sparkles, Cpu, Activity, Zap, CheckCircle2, Shield } from 'lucide-react';
+import { Brain, Eye, Database, Sparkles, Cpu, CheckCircle2, Zap, ShieldCheck } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { soundFx } from '../utils/SoundManager';
 
 export const NeuralCore = () => {
-  const [activeNode, setActiveNode] = useState(0); // 0 to 4
+  const [activeNode, setActiveNode] = useState(0);
+  const [isSynchronized, setIsSynchronized] = useState(false);
+  const [syncPulse, setSyncPulse] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const canvasRef = useRef(null);
 
   const nodes = [
@@ -85,92 +89,132 @@ export const NeuralCore = () => {
     },
   ];
 
-  // Draw dynamic 5-node orbit canvas with glowing energy beams to center
+  // Signature Interaction: Trigger Global Synchronization Pulse
+  const handleSynchronize = () => {
+    soundFx.playClick();
+    soundFx.playInitialize();
+    setIsSynchronized(true);
+    setSyncPulse((prev) => prev + 1);
+
+    confetti({
+      particleCount: 50,
+      spread: 60,
+      origin: { y: 0.55 },
+      colors: ['#00f3ff', '#8b5cf6', '#ffffff']
+    });
+
+    setTimeout(() => {
+      setIsSynchronized(false);
+    }, 2500);
+  };
+
+  const handleCanvasMouseMove = (e) => {
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setMousePos({ x, y });
+  };
+
+  // Interactive 5-Node Dynamic Synaptic Core Canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     let animFrame;
 
-    const size = 360;
+    const size = 380;
     canvas.width = size;
     canvas.height = size;
     let time = 0;
 
     const render = () => {
       ctx.clearRect(0, 0, size, size);
-      const cx = size / 2;
-      const cy = size / 2;
+      const cx = size / 2 + mousePos.x * 12;
+      const cy = size / 2 + mousePos.y * 12;
       time += 0.02;
 
-      // Outer boundary ring
+      // Outer boundary orbit ring
       ctx.beginPath();
-      ctx.arc(cx, cy, 135, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(0, 243, 255, 0.12)';
-      ctx.lineWidth = 1;
+      ctx.arc(cx, cy, 140, 0, Math.PI * 2);
+      ctx.strokeStyle = isSynchronized ? 'rgba(0, 243, 255, 0.4)' : 'rgba(0, 243, 255, 0.12)';
+      ctx.lineWidth = isSynchronized ? 2 : 1;
       ctx.stroke();
 
       // Middle rotating dashed ring
       ctx.save();
       ctx.translate(cx, cy);
-      ctx.rotate(time * 0.3);
+      ctx.rotate(time * 0.35);
       ctx.beginPath();
       ctx.arc(0, 0, 95, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(139, 92, 246, 0.3)';
+      ctx.strokeStyle = isSynchronized ? 'rgba(139, 92, 246, 0.6)' : 'rgba(139, 92, 246, 0.25)';
       ctx.setLineDash([6, 8]);
       ctx.stroke();
       ctx.restore();
 
-      // Central Pulsating Core
-      const pulse = Math.sin(time * 3) * 5;
-      const grad = ctx.createRadialGradient(cx, cy, 5, cx, cy, 45 + pulse);
-      grad.addColorStop(0, 'rgba(0, 243, 255, 0.9)');
-      grad.addColorStop(0.4, 'rgba(139, 92, 246, 0.5)');
+      // Central Synaptic Pulse Core
+      const pulseMultiplier = isSynchronized ? 12 : 5;
+      const pulse = Math.sin(time * 3) * pulseMultiplier;
+      const grad = ctx.createRadialGradient(cx, cy, 5, cx, cy, 50 + pulse);
+      grad.addColorStop(0, isSynchronized ? 'rgba(0, 243, 255, 1)' : 'rgba(0, 243, 255, 0.85)');
+      grad.addColorStop(0.4, isSynchronized ? 'rgba(139, 92, 246, 0.7)' : 'rgba(139, 92, 246, 0.4)');
       grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
       ctx.beginPath();
-      ctx.arc(cx, cy, 40 + pulse, 0, Math.PI * 2);
+      ctx.arc(cx, cy, 42 + pulse, 0, Math.PI * 2);
       ctx.fillStyle = grad;
       ctx.fill();
 
-      // Core center reticle
+      // Central Reticle
       ctx.beginPath();
-      ctx.arc(cx, cy, 14, 0, Math.PI * 2);
+      ctx.arc(cx, cy, isSynchronized ? 16 : 12, 0, Math.PI * 2);
       ctx.fillStyle = '#ffffff';
       ctx.shadowColor = '#00f3ff';
-      ctx.shadowBlur = 12;
+      ctx.shadowBlur = isSynchronized ? 20 : 10;
       ctx.fill();
       ctx.shadowBlur = 0;
 
-      // 5 Nodes positions (72 deg apart)
-      const radius = 135;
+      // 5 Nodes positions & Dynamic Energy Streams
+      const radius = 140;
       for (let i = 0; i < 5; i++) {
-        const angle = (i * (Math.PI * 2)) / 5 - Math.PI / 2 + Math.sin(time * 0.5) * 0.05;
+        const angle = (i * (Math.PI * 2)) / 5 - Math.PI / 2 + Math.sin(time * 0.4) * 0.04;
         const nx = cx + Math.cos(angle) * radius;
         const ny = cy + Math.sin(angle) * radius;
 
         const isCurrent = activeNode === i;
 
-        // Energy beam to center
+        // Dynamic Connecting Synaptic Beam
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(nx, ny);
-        ctx.strokeStyle = isCurrent ? nodes[i].color : 'rgba(255, 255, 255, 0.15)';
-        ctx.lineWidth = isCurrent ? 2.5 : 1;
-        if (isCurrent) {
+        ctx.strokeStyle = isCurrent || isSynchronized ? nodes[i].color : 'rgba(255, 255, 255, 0.12)';
+        ctx.lineWidth = isCurrent ? 2.5 : isSynchronized ? 2 : 1;
+        if (isCurrent || isSynchronized) {
           ctx.shadowColor = nodes[i].color;
-          ctx.shadowBlur = 8;
+          ctx.shadowBlur = 10;
         }
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Node Circle
+        // Energy Particle Pulse along connection line
+        const particleProgress = (time * 1.5 + i * 0.6) % 1;
+        const px = cx + (nx - cx) * particleProgress;
+        const py = cy + (ny - cy) * particleProgress;
         ctx.beginPath();
-        ctx.arc(nx, ny, isCurrent ? 9 : 6, 0, Math.PI * 2);
-        ctx.fillStyle = isCurrent ? nodes[i].color : '#1e293b';
+        ctx.arc(px, py, isSynchronized ? 3.5 : 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#00f3ff';
+        ctx.shadowColor = '#00f3ff';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Orbital Node Circle
+        ctx.beginPath();
+        ctx.arc(nx, ny, isCurrent ? 10 : 7, 0, Math.PI * 2);
+        ctx.fillStyle = isCurrent || isSynchronized ? nodes[i].color : '#131b29';
         ctx.strokeStyle = isCurrent ? '#ffffff' : 'rgba(0, 243, 255, 0.4)';
         ctx.lineWidth = 2;
-        if (isCurrent) {
+        if (isCurrent || isSynchronized) {
           ctx.shadowColor = nodes[i].color;
           ctx.shadowBlur = 14;
         }
@@ -185,45 +229,57 @@ export const NeuralCore = () => {
     render();
 
     return () => cancelAnimationFrame(animFrame);
-  }, [activeNode]);
+  }, [activeNode, isSynchronized, mousePos]);
 
   return (
-    <section id="neural-core" className="py-24 sm:py-32 relative bg-cyber-950 border-t border-b border-cyan-500/10">
+    <section id="neural-core" className="py-24 sm:py-32 relative bg-[#04060a] border-t border-b border-cyan-500/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center space-y-3 mb-16 sm:mb-20">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-cyan-950/60 border border-cyan-400/20 font-mono text-xs text-cyan-300">
             <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-            <span>ARCHITECTURE // INTERACTIVE SYNAPSE CLUSTER</span>
+            <span>SIGNATURE INTERACTION // NEURAL SYNCHRONIZATION</span>
           </div>
           <h2 className="font-orbitron font-black text-3xl sm:text-5xl text-white tracking-wider uppercase">
             THE NEURAL CORE
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
-            Hover over the orbital nodes to inspect how biological cognitive substrates interface with machine acceleration.
+          <p className="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+            Hover over orbital nodes or click to trigger full system neural synchronization.
           </p>
         </div>
 
-        {/* Main Interactive Grid */}
+        {/* Main Grid: Interactive Canvas Core + Telemetry */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          {/* Left / Center: Interactive Orbital Canvas & Quick Selectors */}
-          <div className="lg:col-span-6 flex flex-col items-center justify-center space-y-6">
-            <div className="relative p-4 rounded-2xl bg-cyber-900/80 border border-cyan-500/30 shadow-2xl flex flex-col items-center cyber-corner">
-              
-              <div className="absolute top-3 left-4 font-mono text-[10px] text-cyan-400">
-                CORE FREQUENCY // 128.4 GHz
-              </div>
-              <div className="absolute top-3 right-4 font-mono text-[10px] text-emerald-400">
-                ACTIVE
+          {/* Left: Signature Interactive Canvas Core */}
+          <div className="lg:col-span-6 flex flex-col items-center justify-center space-y-5">
+            <div
+              onClick={handleSynchronize}
+              onMouseMove={handleCanvasMouseMove}
+              className="relative p-4 rounded-2xl bg-cyber-900/80 border border-cyan-500/30 hover:border-cyan-400 shadow-2xl flex flex-col items-center cyber-corner cursor-pointer group transition-all duration-300"
+              title="Click to Synchronize Neural Core"
+            >
+              {/* Corner status */}
+              <div className="w-full flex items-center justify-between px-2 font-mono text-[10px]">
+                <span className="text-slate-400">FREQUENCY: 128.4 GHz</span>
+                <span className={`font-bold transition-colors ${isSynchronized ? 'text-emerald-400' : 'text-cyan-400'}`}>
+                  {isSynchronized ? '● SYNCHRONIZED' : '● LIVE MATRIX'}
+                </span>
               </div>
 
-              <canvas ref={canvasRef} className="w-[300px] h-[300px] sm:w-[340px] sm:h-[340px] my-2" />
+              <canvas
+                ref={canvasRef}
+                className="w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] my-1 transition-transform duration-300 group-hover:scale-105"
+              />
 
-              <div className="w-full flex items-center justify-between pt-2 border-t border-white/5 font-mono text-[11px] text-slate-400">
-                <span>SELECT ORBITAL NODE</span>
-                <span className="text-cyan-400">5 INTERCONNECTED AXES</span>
+              {/* Click prompt overlay */}
+              <div className="w-full pt-2 border-t border-white/5 flex items-center justify-between font-mono text-[11px]">
+                <span className="text-slate-400">CLICK TO SYNCHRONIZE</span>
+                <span className="text-cyan-300 font-semibold flex items-center space-x-1">
+                  <Zap className="w-3 h-3 text-cyan-400 animate-pulse" />
+                  <span>{isSynchronized ? 'SYSTEM SYNCHRONIZED' : 'INITIALIZE PULSE'}</span>
+                </span>
               </div>
             </div>
 
@@ -249,7 +305,7 @@ export const NeuralCore = () => {
             </div>
           </div>
 
-          {/* Right: Detailed Telemetry Panel for Active Node */}
+          {/* Right: Active Node Detail Showcase */}
           <div className="lg:col-span-6">
             <AnimatePresence mode="wait">
               <motion.div
@@ -257,10 +313,10 @@ export const NeuralCore = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-                className="bg-cyber-900/90 border border-cyan-500/30 rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl relative cyber-corner overflow-hidden"
+                transition={{ duration: 0.25 }}
+                className="bg-cyber-900/90 border border-cyan-500/30 rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl cyber-corner relative overflow-hidden"
               >
-                {/* Panel Top Meta */}
+                {/* Header */}
                 <div className="flex items-start justify-between border-b border-white/10 pb-4">
                   <div className="flex items-center space-x-3">
                     <div
@@ -287,13 +343,13 @@ export const NeuralCore = () => {
                   </div>
                 </div>
 
-                {/* Subtitle / Description */}
+                {/* Description */}
                 <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
                   {nodes[activeNode].subtitle}
                 </p>
 
-                {/* Technical Specifications */}
-                <div className="space-y-2.5 pt-2">
+                {/* Biometric Specifications */}
+                <div className="space-y-2.5 pt-1">
                   <span className="font-mono text-[11px] text-cyan-400 font-bold uppercase tracking-wider block">
                     BIOMETRIC SPECIFICATIONS:
                   </span>
@@ -305,7 +361,7 @@ export const NeuralCore = () => {
                   ))}
                 </div>
 
-                {/* Bottom Telemetry Bar */}
+                {/* Footer Telemetry */}
                 <div className="pt-4 border-t border-white/5 flex items-center justify-between font-mono text-xs text-slate-400">
                   <span>LATENCY: <strong className="text-white">{nodes[activeNode].latency}</strong></span>
                   <span>PROTOCOL: <strong className="text-cyan-300">SYNC-v7</strong></span>

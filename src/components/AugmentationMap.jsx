@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, Brain, Activity, Database, Radio, Check, ShieldAlert, Cpu } from 'lucide-react';
+import { Eye, Brain, Activity, Database, Radio, Check, ShieldCheck } from 'lucide-react';
 import { soundFx } from '../utils/SoundManager';
 
 export const AugmentationMap = () => {
@@ -102,31 +102,34 @@ export const AugmentationMap = () => {
   const activeData = zones.find((z) => z.id === selectedZone) || zones[1];
 
   return (
-    <section id="augmentation-map" className="py-24 sm:py-32 relative bg-cyber-900/60 border-t border-b border-cyan-500/10">
+    <section id="augmentation-map" className="py-24 sm:py-32 relative bg-cyber-900/50 border-t border-b border-cyan-500/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center space-y-3 mb-16 sm:mb-20">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-violet-950/60 border border-violet-400/20 font-mono text-xs text-violet-300">
             <Activity className="w-3.5 h-3.5 text-violet-400" />
-            <span>MEDICAL LAB // ANATOMICAL DIAGNOSTICS</span>
+            <span>MEDICAL SCANNER // ANATOMICAL TELEMETRY</span>
           </div>
           <h2 className="font-orbitron font-black text-3xl sm:text-5xl text-white tracking-wider uppercase">
             AUGMENTATION MAP
           </h2>
           <p className="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
-            Interactive anatomical telemetry. Select an implant zone to inspect physiological parameters and firmware diagnostics.
+            Continuous holographic laser sweep. Select an implant zone to inspect physiological parameters.
           </p>
         </div>
 
-        {/* Interactive Silhouette + Diagnostic Panel */}
+        {/* Scanner & Inspector Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          {/* Left / Center: Futuristic Silhouette with Hotspots */}
+          {/* Left: Medical Scanning Silhouette */}
           <div className="lg:col-span-6 flex flex-col items-center justify-center">
             <div className="relative w-full max-w-sm aspect-[3/4] bg-cyber-950/90 border border-cyan-500/30 rounded-2xl p-6 flex items-center justify-center cyber-corner shadow-2xl overflow-hidden">
               
-              {/* Corner crosshairs */}
+              {/* Periodic Sweeping Horizontal Laser Beam */}
+              <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#00f3ff] animate-scanline pointer-events-none opacity-70 z-20" />
+
+              {/* Corner labels */}
               <div className="absolute top-3 left-4 font-mono text-[10px] text-slate-500">
                 BIO-SCANNER // S-01
               </div>
@@ -136,46 +139,40 @@ export const AugmentationMap = () => {
 
               {/* SVG Human Silhouette with Glowing Implants */}
               <div className="relative w-full h-full flex items-center justify-center">
-                <svg viewBox="0 0 200 320" className="w-full h-full opacity-70">
+                <svg viewBox="0 0 200 320" className="w-full h-full opacity-75">
                   {/* Grid Lines */}
-                  <line x1="100" y1="10" x2="100" y2="310" stroke="rgba(0,243,255,0.1)" strokeDasharray="3,3" />
-                  <line x1="20" y1="160" x2="180" y2="160" stroke="rgba(0,243,255,0.1)" strokeDasharray="3,3" />
-                  <circle cx="100" cy="160" r="80" stroke="rgba(0,243,255,0.05)" fill="none" />
+                  <line x1="100" y1="10" x2="100" y2="310" stroke="rgba(0,243,255,0.08)" strokeDasharray="3,3" />
+                  <line x1="20" y1="160" x2="180" y2="160" stroke="rgba(0,243,255,0.08)" strokeDasharray="3,3" />
+                  <circle cx="100" cy="160" r="80" stroke="rgba(0,243,255,0.04)" fill="none" />
 
-                  {/* Stylized Cybernetic Body Outline */}
-                  {/* Head */}
+                  {/* Body Outline */}
                   <path d="M100,20 C85,20 85,45 85,60 C85,75 95,85 100,85 C105,85 115,75 115,60 C115,45 115,20 100,20 Z" fill="rgba(16,24,39,0.9)" stroke="rgba(0,243,255,0.4)" strokeWidth="1.5" />
-                  {/* Neck */}
                   <path d="M93,85 L107,85 L108,98 L92,98 Z" fill="rgba(16,24,39,0.9)" stroke="rgba(0,243,255,0.3)" />
-                  {/* Torso & Shoulders */}
                   <path d="M60,105 L140,105 L130,200 L70,200 Z" fill="rgba(16,24,39,0.9)" stroke="rgba(0,243,255,0.35)" strokeWidth="1.5" />
-                  {/* Left Arm */}
                   <path d="M60,105 L45,150 L35,210 L45,210 L55,160 L68,120 Z" fill="rgba(16,24,39,0.9)" stroke="rgba(0,243,255,0.3)" />
-                  {/* Right Arm */}
                   <path d="M140,105 L155,150 L165,210 L155,210 L145,160 L132,120 Z" fill="rgba(16,24,39,0.9)" stroke="rgba(0,243,255,0.3)" />
-                  {/* Legs */}
                   <path d="M72,200 L68,260 L65,310 L82,310 L88,260 L95,200 Z" fill="rgba(16,24,39,0.9)" stroke="rgba(0,243,255,0.3)" />
                   <path d="M128,200 L132,260 L135,310 L118,310 L112,260 L105,200 Z" fill="rgba(16,24,39,0.9)" stroke="rgba(0,243,255,0.3)" />
 
-                  {/* Active Highlight Glow in Silhouette */}
+                  {/* Active Highlight Glow */}
                   {selectedZone === 'neural' && (
-                    <circle cx="100" cy="40" r="14" fill="rgba(139,92,246,0.5)" filter="blur(6px)" />
+                    <circle cx="100" cy="40" r="15" fill="rgba(139,92,246,0.55)" filter="blur(6px)" />
                   )}
                   {selectedZone === 'optical' && (
-                    <circle cx="100" cy="52" r="8" fill="rgba(0,243,255,0.7)" filter="blur(4px)" />
+                    <circle cx="100" cy="52" r="9" fill="rgba(0,243,255,0.75)" filter="blur(4px)" />
                   )}
                   {selectedZone === 'memory' && (
-                    <circle cx="100" cy="72" r="10" fill="rgba(59,130,246,0.6)" filter="blur(5px)" />
+                    <circle cx="100" cy="72" r="11" fill="rgba(59,130,246,0.65)" filter="blur(5px)" />
                   )}
                   {selectedZone === 'muscle' && (
-                    <circle cx="50" cy="150" r="16" fill="rgba(16,185,129,0.6)" filter="blur(6px)" />
+                    <circle cx="50" cy="150" r="16" fill="rgba(16,185,129,0.65)" filter="blur(6px)" />
                   )}
                   {selectedZone === 'sensory' && (
-                    <circle cx="150" cy="150" r="16" fill="rgba(245,158,11,0.6)" filter="blur(6px)" />
+                    <circle cx="150" cy="150" r="16" fill="rgba(245,158,11,0.65)" filter="blur(6px)" />
                   )}
                 </svg>
 
-                {/* Interactive Hotspot Buttons */}
+                {/* Hotspot Pulsing Buttons */}
                 {zones.map((zone) => {
                   const isCurrent = selectedZone === zone.id;
                   return (
@@ -187,9 +184,10 @@ export const AugmentationMap = () => {
                       }}
                       onMouseEnter={() => soundFx.playHover()}
                       style={{ left: zone.x, top: zone.y }}
-                      className="absolute -translate-x-1/2 -translate-y-1/2 p-2 group cursor-pointer focus:outline-none"
+                      className="absolute -translate-x-1/2 -translate-y-1/2 p-2 group cursor-pointer focus:outline-none z-30"
+                      aria-label={`Select ${zone.name}`}
                     >
-                      <span className={`relative flex h-4 w-4`}>
+                      <span className="relative flex h-4 w-4">
                         <span
                           className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
                             isCurrent ? 'bg-cyan-400' : 'bg-slate-500'
@@ -209,7 +207,7 @@ export const AugmentationMap = () => {
               </div>
 
               {/* Bottom Quick Zone Toggles */}
-              <div className="absolute bottom-3 inset-x-4 flex justify-center space-x-2">
+              <div className="absolute bottom-3 inset-x-4 flex justify-center space-x-1.5 z-30">
                 {zones.map((z) => (
                   <button
                     key={z.id}
@@ -238,7 +236,7 @@ export const AugmentationMap = () => {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.25 }}
                 className="bg-cyber-950/90 border border-cyan-500/30 rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl cyber-corner relative overflow-hidden"
               >
                 {/* Header */}

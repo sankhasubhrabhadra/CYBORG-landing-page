@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Command, Volume2, VolumeX, ShieldCheck, Cpu } from 'lucide-react';
+import { Menu, X, Command, Volume2, VolumeX } from 'lucide-react';
 import { soundFx } from '../utils/SoundManager';
 
 export const Navbar = ({ onOpenModal, onOpenCommandPalette, onToggleSound, isMuted }) => {
@@ -83,17 +83,17 @@ export const Navbar = ({ onOpenModal, onOpenCommandPalette, onToggleSound, isMut
 
           {/* Right: Actions, Command Center, Audio & Status */}
           <div className="hidden sm:flex items-center space-x-3">
-            {/* Command Palette Trigger */}
+            {/* Command Palette Trigger with exact ⌘ K hint */}
             <button
               onClick={() => {
                 soundFx.playClick();
                 onOpenCommandPalette();
               }}
-              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-cyber-900 border border-slate-700 hover:border-cyan-400/50 text-[11px] font-mono text-slate-400 hover:text-cyan-300 transition-all"
-              title="Open Command Center (Ctrl+K)"
+              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-cyber-900 border border-slate-700 hover:border-cyan-400/50 text-[11px] font-mono text-slate-300 hover:text-cyan-300 transition-all"
+              title="Open Command Center (⌘ K / Ctrl+K)"
             >
-              <Command className="w-3.5 h-3.5" />
-              <span>CTRL+K</span>
+              <Command className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="font-bold">⌘ K</span>
             </button>
 
             {/* Sound Mute/Unmute */}
@@ -173,7 +173,7 @@ export const Navbar = ({ onOpenModal, onOpenCommandPalette, onToggleSound, isMut
                   }}
                   className="px-2 py-1 rounded bg-cyber-900 border border-slate-700 text-cyan-300 text-[10px]"
                 >
-                  CTRL+K
+                  ⌘ K
                 </button>
               </div>
 
