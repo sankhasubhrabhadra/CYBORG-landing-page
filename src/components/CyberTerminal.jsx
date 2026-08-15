@@ -12,10 +12,13 @@ export const CyberTerminal = () => {
     { type: 'sys', text: ' ' },
   ]);
 
-  const terminalEndRef = useRef(null);
+  const terminalBodyRef = useRef(null);
 
+  // Scroll ONLY the internal terminal container, never the window
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (terminalBodyRef.current) {
+      terminalBodyRef.current.scrollTop = terminalBodyRef.current.scrollHeight;
+    }
   }, [outputLines]);
 
   const handleCommand = (e) => {
@@ -176,7 +179,7 @@ export const CyberTerminal = () => {
           </div>
 
           {/* Terminal Console Output Body */}
-          <div className="p-5 space-y-1.5 h-80 overflow-y-auto scanlines">
+          <div ref={terminalBodyRef} className="p-5 space-y-1.5 h-80 overflow-y-auto scanlines">
             {outputLines.map((line, idx) => (
               <div
                 key={idx}
@@ -193,7 +196,6 @@ export const CyberTerminal = () => {
                 {line.text}
               </div>
             ))}
-            <div ref={terminalEndRef} />
           </div>
 
           {/* Interactive Input Form */}
