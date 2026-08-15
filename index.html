@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth dark">
+<html lang="en" class="scroll-smooth dark" style="background-color: #040507; color: #e2e8f0;">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f3ff' stroke-width='2'><path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'/></svg>" />
@@ -7,13 +7,25 @@
     <title>CYBORG//01 — Human × Machine Evolution</title>
     <meta name="description" content="Explore the future of human augmentation, neural interfaces and cybernetic evolution." />
     <meta name="theme-color" content="#040507" />
+    
+    <!-- Critical Inline Styles to prevent white flash on load -->
+    <style>
+      html, body, #root {
+        background-color: #040507 !important;
+        color: #e2e8f0;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+      }
+    </style>
+
     <!-- Google Fonts: Orbitron, Rajdhani, Space Grotesk, Space Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-cyber-950 text-slate-200 antialiased selection:bg-neon-cyan/20 selection:text-neon-cyan overflow-x-hidden">
-    <div id="root"></div>
+  <body class="bg-cyber-950 text-slate-200 antialiased selection:bg-neon-cyan/20 selection:text-neon-cyan overflow-x-hidden" style="background-color: #040507;">
+    <div id="root" style="background-color: #040507; min-height: 100vh;"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
