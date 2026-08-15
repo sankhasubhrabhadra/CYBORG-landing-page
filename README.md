@@ -3,11 +3,20 @@
 > **"Biological intelligence enhanced by computational intelligence."**  
 > A competition-grade, futuristic cybernetic operating system & AI laboratory landing page built with React 18, Vite, Tailwind CSS, and Framer Motion.
 
+[![Live Site](https://img.shields.io/badge/Live_Demo-CYBORG%2F%2F01-00f3ff?style=for-the-badge&logo=google-chrome&logoColor=black)](https://sankhasubhrabhadra.github.io/CYBORG-landing-page/)
+[![Demo Video](https://img.shields.io/badge/Demo_Video-Google_Drive-red?style=for-the-badge&logo=google-drive&logoColor=white)](https://drive.google.com/file/d/18n50iIXYIP2HT2-MDOWkEKTOIVcIeTof/view?usp=sharing)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React_18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_3-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+---
+
+## 🎥 Live Demonstration & Video
+
+- **🌐 Interactive Live Website**: [https://sankhasubhrabhadra.github.io/CYBORG-landing-page/](https://sankhasubhrabhadra.github.io/CYBORG-landing-page/)
+- **🎬 Video Walkthrough & Feature Demo**: [Google Drive Demo Video](https://drive.google.com/file/d/18n50iIXYIP2HT2-MDOWkEKTOIVcIeTof/view?usp=sharing)
 
 ---
 
@@ -33,12 +42,13 @@
 ### 3. ⌨️ Global Command Palette (`Ctrl + K` / `Cmd + K`)
 - Press **`Ctrl + K`** (or click the header badge) to open the **CYBORG COMMAND CENTER** with arrow-key navigation, instant search, section jumps, and sound toggles.
 
-### 4. 🧠 5-Node Interactive Neural Core
+### 4. 🧠 5-Node Interactive Neural Core (Signature Interaction)
 - Central glowing core surrounded by 5 orbital nodes: `COGNITION`, `PERCEPTION`, `MEMORY`, `ADAPTATION`, and `PROCESSING`.
 - Dynamic canvas energy beams connect each node to the core on hover/click, updating telemetry and biological specs.
+- Clicking triggers **`SYSTEM SYNCHRONIZED`** state with network energy ripple & sound.
 
 ### 5. 🔬 Cybernetic Body Interface (Augmentation Map)
-- Anatomical silhouette with 5 interactive diagnostic hotspots: `OPTICAL SYSTEM`, `NEURAL INTERFACE`, `SYNTHETIC MUSCLE`, `MEMORY CORE`, and `SENSORY ARRAY`.
+- Anatomical silhouette with continuous laser scanning beam and 5 interactive diagnostic hotspots: `OPTICAL SYSTEM`, `NEURAL INTERFACE`, `SYNTHETIC MUSCLE`, `MEMORY CORE`, and `SENSORY ARRAY`.
 - Live medical inspection console displaying health indexes, biometric parameters, and hardware specs.
 
 ### 6. 📊 Bento-Style Technology Grid
@@ -51,7 +61,7 @@
   - **Adaptive Core** (heuristic acclimation loop)
 
 ### 7. 📈 Live System Telemetry Hub
-- Real-time telemetry monitoring: `NEURAL SYNC 98.7%`, `PROCESSING LOAD 67.4%`, `REACTION TIME 12ms`, `ADAPTATION 91.8%`, `COGNITIVE BANDWIDTH 84.2%`.
+- Real-time telemetry monitoring: `SYSTEM STABILITY 99.98%`, `NEURAL SYNC 98.72%`, `PROCESSING 67.41%`, `REACTION 12ms`, `COGNITIVE BANDWIDTH 84.20%`.
 - Real-time animated oscilloscope SVG wave graph and interactive **"ENGAGE OVERCLOCK"** button.
 
 ### 8. 💻 Interactive Cyber Terminal CLI
